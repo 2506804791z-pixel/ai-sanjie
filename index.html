@@ -1,0 +1,117 @@
+
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101827">
+<title>AI三界 · 多AI协作工作台</title>
+<style>
+*{box-sizing:border-box}
+body{margin:0;background:#0b1020;color:#eef4ff;font-family:system-ui,sans-serif}
+main{max-width:850px;margin:auto;padding:18px 14px 40px}
+header,.hero,.panel,.agent{border:1px solid #2a3852;border-radius:16px;padding:16px;margin-bottom:12px}
+header{font-size:24px;font-weight:800}
+small,.muted{color:#a4b2c9}
+.hero{background:#172641}
+h1{font-size:22px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.agent{background:#121b2d;margin:0;padding:12px}
+.agent h3{font-size:15px}
+.panel{background:#121b2d;margin-top:14px}
+label{display:block;margin:12px 0 7px}
+textarea,select{width:100%;padding:12px;border-radius:10px;border:1px solid #405474;background:#0b1323;color:white;font:inherit}
+textarea{min-height:100px}
+button{padding:12px;border:0;border-radius:10px;background:#7aa7ff;color:#081326;font-weight:bold;margin:10px 5px 0 0}
+.result{white-space:pre-wrap;line-height:1.7;background:#0b1323;border:1px solid #2a3852;border-radius:10px;padding:12px;margin-top:10px}
+@media(max-width:520px){.grid{grid-template-columns:1fr}.agent{padding:8px}}
+</style>
+</head>
+<body>
+<main>
+<header>✦ AI 三界<br><small>多 AI 分工协作 · 网页原型 V0.1</small></header>
+<section class="hero">
+<h1>一个任务，多个 AI 分工</h1>
+<p>把复杂问题拆解为规划、分析、执行与汇总。当前为本地演示版，尚未连接真实 AI 接口。</p>
+</section>
+<div class="grid">
+<section class="agent"><h3>🧭 总协调员</h3><p>拆解目标、安排任务。</p></section>
+<section class="agent"><h3>🧠 推理分析员</h3><p>比较方案、分析风险。</p></section>
+<section class="agent"><h3>🛠️ 执行顾问</h3><p>整理步骤、检查可行性。</p></section>
+</div>
+<section class="panel">
+<h2>开始协作</h2>
+<label for="task">你要解决什么问题？</label>
+<textarea id="task" placeholder="例如：帮我设计一个手机游戏原型"></textarea>
+<label for="kind">任务类型</label>
+<select id="kind">
+<option value="general">综合研究 / 方案规划</option>
+<option value="coding">编程 / 产品开发</option>
+<option value="writing">写作 / 内容创作</option>
+<option value="decision">比较选择 / 风险评估</option>
+</select>
+<button id="run">运行演示协作</button>
+<button id="clear">清空</button>
+<div id="output"></div>
+<p class="muted">演示结果由网页本地模板生成，不会调用外部 AI，也不会产生 API 费用。</p>
+</section>
+<section class="panel">
+<h2>后续升级路线</h2>
+<p>1. 部署网页并验证手机体验。</p>
+<p>2. 接入 Coze 智能体 API。</p>
+<p>3. 评估 OpenAI API 的单独费用。</p>
+<p>4. 核实腾讯元宝可用的官方接口。</p>
+<p class="muted">不要在网页中填写或公开 API 密钥。</p>
+</section>
+</main>
+<script>
+const task=document.getElementById('task');
+const kind=document.getElementById('kind');
+const output=document.getElementById('output');
+document.getElementById('run').onclick=()=>{
+ const t=task.value.trim();
+ if(!t){alert('请先输入一个任务');return}
+ let plan='明确目标，再拆分成可执行步骤。';
+ let analysis='比较不同方案的收益、成本、风险与未知信息。';
+ let action='先完成最小可用版本，再测试和迭代。';
+ if(kind.value==='coding'){
+  plan='定义功能和验收标准，选择最简单的技术路线。';
+  analysis='检查设备限制、接口、成本、安全和维护难度。';
+  action='先验证原型，再逐步接入真实 AI 服务。';
+ }
+ if(kind.value==='writing'){
+  plan='明确读者、目的、语气和格式。';
+  analysis='检查结构、事实依据和表达歧义。';
+  action='先完成初稿，再修改和校对。';
+ }
+ if(kind.value==='decision'){
+  plan='明确不能妥协的条件和评价指标。';
+  analysis='用统一指标比较选项，区分事实与假设。';
+  action='先做低成本试验，再根据结果决定。';
+ }
+ output.innerHTML='';
+ const items=[
+  ['① 总协调员','任务：'+t+'\n\n'+plan],
+  ['② 推理分析员',analysis+'\n\n注意核实事实和实际成本。'],
+  ['③ 执行顾问',action],
+  ['④ 协作汇总','建议先完成最小步骤，再依据实际结果调整。']
+ ];
+ items.forEach(([title,content])=>{
+  const box=document.createElement('div');
+  box.className='result';
+  const h=document.createElement('strong');
+  h.textContent=title+'（模拟）';
+  const p=document.createElement('p');
+  p.textContent=content;
+  box.append(h,p);
+  output.append(box);
+ });
+};
+document.getElementById('clear').onclick=()=>{
+ task.value='';
+ output.innerHTML='';
+ kind.value='general';
+};
+</script>
+</body>
+</html>
